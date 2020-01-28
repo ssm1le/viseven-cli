@@ -13,10 +13,15 @@ commander
 	.command('img [pathTo]')
 	.description('Get pictures from aem folders')
 	.action(function (pathTo) {
-		const pathFrom = process.cwd();
-		pathTo = checkPath(pathTo) || pathFrom;
-		extractFiles(pathFrom, pathTo);
-		console.log(chalk.white.bgRed.bold("Misha vse ZBS!!! Gulayem :D."));
+		try {
+			const pathFrom = process.cwd();
+			pathTo = pathTo && checkPath(pathTo) || pathFrom;
+			extractFiles(pathFrom, pathTo);
+			console.log(chalk.white.bgRed.bold("Misha vse ZBS!!! Gulayem :D."));
+		}
+		catch (err) {
+			console.log(chalk.red(err));
+		}
 	});
 
 commander

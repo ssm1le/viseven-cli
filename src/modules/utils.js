@@ -12,9 +12,8 @@ exports.moveFileToDirectory = function (file, pathToDirectory) {
 
 exports.checkPath = function (path) {
   if (fs.existsSync(path)) {
-    console.log('Utils', path)
     return path;
   }
-  console.error(chalk.red(`Err! Invalid path: ${path}`));
+  throw `Err! Invalid path: ${path}`;
   return '';
 }
