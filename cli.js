@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 const commander = require('commander');
-const getImage = require('./src/commands/getPicturesFromAemFolders');
-const { version } = require('./package.json');
 const chalk = require('chalk');
+const { version } = require('./package.json');
+const { checkPath } = require('./src/modules/utils.js');
+
+const extractFiles = require('./src/commands/getFilesFromAemFolders');
 
 commander
 	.version(version);
@@ -12,12 +14,12 @@ commander
 	.description('Get pictures from aem folders')
 	.action(function (pathTo) {
 		const pathFrom = process.cwd();
-		pathTo = pathTo || pathFrom;
-		getImage(pathFrom, pathTo);
+		pathTo = checkPath(pathTo) || pathFrom;
+		extractFiles(pathFrom, pathTo);
 		console.log(chalk.white.bgRed.bold("Misha vse ZBS!!! Gulayem :D."));
 	});
 
-commander	
+commander
 	.command('test')
 	.description('test')
 	.action(function () {
