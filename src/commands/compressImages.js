@@ -5,7 +5,7 @@ const imageminPngquant = require('imagemin-pngquant');
 module.exports = function () {
     (async () => {
         const files = await imagemin(['*.{jpg,png}'], {
-            destination: ``,
+            destination: `./`,
             plugins: [
                 imageminJpegtran(),
                 imageminPngquant({
@@ -13,6 +13,5 @@ module.exports = function () {
                 })
             ]
         });
-        console.log(files);
     })();
 }
