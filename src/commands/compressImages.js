@@ -1,17 +1,13 @@
-const imagemin = require('imagemin');
-const imageminJpegtran = require('imagemin-jpegtran');
-const imageminPngquant = require('imagemin-pngquant');
+const tinify = require("tinify");
+const { imagesFiles } = require('../modules/utils.js');
 
-module.exports = function () {
-    (async () => {
-        const files = await imagemin(['*.{jpg,png}'], {
-            destination: `./`,
-            plugins: [
-                imageminJpegtran(),
-                imageminPngquant({
-                    quality: [0.6, 0.8]
-                })
-            ]
-        });
-    })();
+const API_KEY = "FJWkXhYrxJBfXv00blrJGm0gt798c97k";
+
+module.exports = function (pathToImage) {
+    tinify.key = API_KEY;
+    let getImages = imagesFiles(pathToImage);
+    
+    getImages.forEach(img => {
+        tinify.fromFile(img).toFile(img);
+    });
 }
