@@ -6,6 +6,7 @@ const { checkPath } = require('./src/modules/utils.js');
 
 const extractFiles = require('./src/commands/getFilesFromAemFolders');
 const compressImages = require('./src/commands/compressImages');
+const setApiKey = require('./src/commands/setConfig');
 
 // For change current working directory
 // process.chdir("/Users/a.hrodetskiy/Downloads/AEM24-Jan-202015.08(6assets)");
@@ -35,6 +36,14 @@ commander
 		const pathToImage = process.cwd();
 		compressImages(pathToImage);
 		console.log(chalk.white.bgGreen.bold("Compressed!"));
+	});
+
+commander
+	.command('setApiKey <key>')
+	.description('Set tinyfy api key')
+	.action(function (key) {
+		setApiKey(key);
+		console.log(chalk.white.bgGreen.bold("Done"));
 	});
 
 commander

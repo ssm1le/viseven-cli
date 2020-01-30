@@ -12,7 +12,12 @@ exports.imagesFiles = function (pathToFolder) {
 
 exports.moveFileToDirectory = function (file, pathToDirectory) {
   fs.renameSync(file, path.resolve(pathToDirectory, path.basename(file)));
-};
+}
+
+exports.getConfigFile = function () {
+  let config = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), 'utf8'));
+  return config;
+}
 
 exports.checkPath = function (pathForCheck) {
   if (fs.existsSync(pathForCheck)) {
