@@ -7,6 +7,9 @@ const { checkPath } = require('./src/modules/utils.js');
 const extractFiles = require('./src/commands/getFilesFromAemFolders');
 const compressImages = require('./src/commands/compressImages');
 
+// For change current working directory
+// process.chdir("/Users/a.hrodetskiy/Downloads/AEM24-Jan-202015.08(6assets)");
+
 commander
 	.version(version);
 
