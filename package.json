@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "bin": {
-    "vis": "./cli.js"
+    "vis": "./index.js"
   },
   "scripts": {
     "link": "npm i && npm link"
@@ -14,6 +14,7 @@
   "dependencies": {
     "chalk": "^3.0.0",
     "commander": "^4.0.1",
+    "esm": "^3.2.25",
     "fs-extra": "^8.1.0",
     "rimraf": "^3.0.0",
     "tinify": "^1.6.0-beta.2"

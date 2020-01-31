@@ -1,25 +1,28 @@
-#!/usr/bin/env node
-const commander = require('commander');
-const chalk = require('chalk');
-const { version } = require('./package.json');
-const { checkPath } = require('./src/modules/utils.js');
 
-const extractFiles = require('./src/commands/getFilesFromAemFolders');
-const compressImages = require('./src/commands/compressImages');
-const setApiKey = require('./src/commands/setConfig');
+import commander from 'commander';
+import chalk from 'chalk';
+
+import { getValidPath } from './src/modules/utils';
+import { extractFiles } from './src/commands/getFilesFromAemFolders';
+import { compressImages } from './src/commands/compressImages';
+import { setApiKey } from './src/commands/setConfig';
+
+const { version } = require('./package.json');
 
 commander
 	.version(version);
 
 commander
 	.command('file [pathTo]')
-	.description('Get files from aem folders')
+	.description('Get files from AEM folder')
 	.action((pathTo) => {
 		try {
 			const pathFrom = process.cwd();
-			pathTo = pathTo && checkPath(pathTo) || pathFrom;
-			extractFiles(pathFrom, pathTo);
-			console.log(chalk.white.bgGreen.bold("Files moved!"));
+			pathTo = pathTo && getValidPath(pathTo) || pathFrom;
+
+			console.log(chalk.yellow("Start moving files"));
+			extractFiles(pathFrom, pathTo)
+				.then(console.log(chalk.green("Files moved!")));
 		}
 		catch (err) {
 			console.log(chalk.red(err));

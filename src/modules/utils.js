@@ -1,26 +1,25 @@
-const fs = require('fs-extra');
-const path = require('path');
+import fs from 'fs-extra';
+import path from 'path';
 
-exports.getAllFoldersFromPath = function (mainPath) {
+export function getAllFoldersFromPath(mainPath) {
   return fs.readdirSync(mainPath).filter(f => fs.statSync(path.join(mainPath, f)).isDirectory());
 }
 
-exports.imagesFiles = function (pathToFolder) {
-  let list = fs.readdirSync(pathToFolder, 'utf8').filter(fn => fn.endsWith('.png') || fn.endsWith('.jpg'));
-  return list
+export function getImagesFilesFromFolder(pathToFolder) {
+  return fs.readdirSync(pathToFolder, 'utf8').filter(fn => fn.endsWith('.png') || fn.endsWith('.jpg'));
 }
 
-exports.moveFileToDirectory = function (file, pathToDirectory) {
+export function moveFileToDirectory(file, pathToDirectory) {
   fs.renameSync(file, path.resolve(pathToDirectory, path.basename(file)));
 }
 
-exports.getConfigFile = function () {
+export function getConfigFile() {
   return JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), 'utf8'));
 }
 
-exports.checkPath = function (pathForCheck) {
-  if (fs.existsSync(pathForCheck)) {
-    return pathForCheck;
+export function getValidPath(path) {
+  if (fs.existsSync(path)) {
+    return path;
   }
-  throw `Err! Invalid path: ${pathForCheck}`;
+  throw `Err! Invalid path: ${path}`;
 }

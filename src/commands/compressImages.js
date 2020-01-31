@@ -1,10 +1,11 @@
-const tinify = require("tinify");
-const { imagesFiles, getConfigFile } = require('../modules/utils.js');
+import tinify from 'tinify';
+import { getImagesFilesFromFolder, getConfigFile } from '../modules/utils';
+
 const API_KEY = getConfigFile().apiKey;
 
-module.exports = function (pathToImage) {
+export function compressImages (pathToImage) {
     tinify.key = API_KEY;
-    compressed(imagesFiles(pathToImage));
+    compressed(getImagesFilesFromFolder(pathToImage));
 }
 
 function compressed(images) {

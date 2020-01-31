@@ -1,8 +1,8 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { getConfigFile } = require('../modules/utils.js');
+import fs from 'fs-extra';
+import path from 'path';
+import { getConfigFile } from '../modules/utils';
 
-module.exports = function (key) {
+export function setApiKey(key) {
     const config = getConfigFile();
     const apiObj = getConfigObj(key);
     fs.writeFileSync(path.join(__dirname, "..", "config.json"), JSON.stringify({ ...config, ...apiObj}));
