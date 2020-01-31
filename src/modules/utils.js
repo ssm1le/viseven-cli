@@ -15,8 +15,7 @@ exports.moveFileToDirectory = function (file, pathToDirectory) {
 }
 
 exports.getConfigFile = function () {
-  let config = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), 'utf8'));
-  return config;
+  return JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), 'utf8'));
 }
 
 exports.checkPath = function (pathForCheck) {

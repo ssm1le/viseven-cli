@@ -4,9 +4,8 @@ const { getConfigFile } = require('../modules/utils.js');
 
 module.exports = function (key) {
     const config = getConfigFile();
-    const tempObj = Object.assign(config, getConfigObj(key));
-
-    fs.writeFileSync(path.join(__dirname, "..", "config.json"), JSON.stringify(tempObj));
+    const apiObj = getConfigObj(key);
+    fs.writeFileSync(path.join(__dirname, "..", "config.json"), JSON.stringify({ ...config, ...apiObj}));
 }
 
 function getConfigObj(key) {

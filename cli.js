@@ -8,21 +8,18 @@ const extractFiles = require('./src/commands/getFilesFromAemFolders');
 const compressImages = require('./src/commands/compressImages');
 const setApiKey = require('./src/commands/setConfig');
 
-// For change current working directory
-// process.chdir("/Users/a.hrodetskiy/Downloads/AEM24-Jan-202015.08(6assets)");
-
 commander
 	.version(version);
 
 commander
-	.command('img [pathTo]')
-	.description('Get pictures from aem folders')
-	.action(function (pathTo) {
+	.command('file [pathTo]')
+	.description('Get files from aem folders')
+	.action((pathTo) => {
 		try {
 			const pathFrom = process.cwd();
 			pathTo = pathTo && checkPath(pathTo) || pathFrom;
 			extractFiles(pathFrom, pathTo);
-			console.log(chalk.white.bgGreen.bold("Pictures moved!"));
+			console.log(chalk.white.bgGreen.bold("Files moved!"));
 		}
 		catch (err) {
 			console.log(chalk.red(err));
@@ -32,16 +29,16 @@ commander
 commander
 	.command('compress')
 	.description('Compress images')
-	.action(function () {
+	.action(() => {
 		const pathToImage = process.cwd();
 		compressImages(pathToImage);
-		console.log(chalk.white.bgGreen.bold("Compressed!"));
+		console.log(chalk.white.bgGreen.bold("Compress in progress!"));
 	});
 
 commander
 	.command('setApiKey <key>')
 	.description('Set tinyfy api key')
-	.action(function (key) {
+	.action((key) => {
 		setApiKey(key);
 		console.log(chalk.white.bgGreen.bold("Done"));
 	});
@@ -49,11 +46,9 @@ commander
 commander
 	.command('test')
 	.description('test')
-	.action(function () {
+	.action(() => {
 		console.log(chalk.white.bgGreen.bold("test"));
 	});
-
-
 
 commander
 	.parse(process.argv);
