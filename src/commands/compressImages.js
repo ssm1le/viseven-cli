@@ -1,26 +1,33 @@
 import tinify from 'tinify';
+import chalk from 'chalk';
 import { getImagesFilesFromFolder, getConfigFile } from '../modules/utils';
 
-const API_KEY = getConfigFile().apiKey;
+const MAX_COUNT_OPTIMIZE_IMAGES = 500;
 
-export function compressImages (pathToImage) {
-    tinify.key = API_KEY;
-    compressed(getImagesFilesFromFolder(pathToImage));
+export function compressImages(pathToFolder) {
+    return new Promise((resolve) => {
+        tinify.key = getConfigFile().apiKey;
+        compressed(getImagesFilesFromFolder(pathToFolder))
+            .then(({compressionCount, imagesCount}) => {
+                console.log(chalk.yellow(`You optimized ${chalk.red(compressionCount)} images on this month, max number of free images is ${chalk.red(MAX_COUNT_OPTIMIZE_IMAGES)}`));
+                resolve(imagesCount);
+            });
+    })
 }
 
 function compressed(images) {
-    tinify.validate((err) => {
-        if (err) {
-            if (err.message.indexOf("Error while connecting") !== -1) {
-                console.log("Error: You seem to have trouble with network connection");
+    const imagesCount = images.length;
+    return new Promise((resolve) => {
+        tinify.validate((err) => {
+            if (err) {
+                console.error(chalk.red("The error message is: " + err.message));
             } else {
-                console.log("Error: Your API key is not yet set, or it's invalid");
+                images.forEach(img => {
+                    tinify.fromFile(img).toFile(img);
+                });
+                const compressionCount = tinify.compressionCount;
+                resolve({compressionCount, imagesCount});
             }
-        } else {
-            console.log(`You optimized ${tinify.compressionCount} images this month, max number of free images is 500`);
-            images.forEach(img => {
-                tinify.fromFile(img).toFile(img);
-            });
-        }
-    });
+        });
+    })
 }

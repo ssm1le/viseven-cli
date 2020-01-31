@@ -22,7 +22,9 @@ commander
 
 			console.log(chalk.yellow("Start moving files"));
 			extractFiles(pathFrom, pathTo)
-				.then(console.log(chalk.green("Files moved!")));
+				.then(() => {
+					console.log(chalk.green("Files moved!"))
+				});
 		}
 		catch (err) {
 			console.log(chalk.red(err));
@@ -34,8 +36,12 @@ commander
 	.description('Compress images')
 	.action(() => {
 		const pathToImage = process.cwd();
-		compressImages(pathToImage);
-		console.log(chalk.white.bgGreen.bold("Compress in progress!"));
+		console.log(chalk.yellow("Compress in progress!"));
+		compressImages(pathToImage)
+			.then((optimizedImagesCount) => {
+				console.log(chalk.green(`Done! Optimized ${optimizedImagesCount} images`));
+			}
+		);
 	});
 
 commander
@@ -43,7 +49,7 @@ commander
 	.description('Set tinyfy api key')
 	.action((key) => {
 		setApiKey(key);
-		console.log(chalk.white.bgGreen.bold("Done"));
+		console.log(chalk.green("Done"));
 	});
 
 commander
