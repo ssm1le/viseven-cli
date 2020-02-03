@@ -16,7 +16,7 @@ export function extractFiles(pathFrom, pathTo) {
                 moveFileToDirectory(join(tempFolderName, file), pathTo);
                 fs.removeSync(tempFolderName);
             });
-        });
+});
         resolve();
     })
 }
