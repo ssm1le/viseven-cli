@@ -8,7 +8,7 @@ export function compressImages(pathToFolder) {
     return new Promise((resolve) => {
         tinify.key = getConfigFile().apiKey;
         compressed(getImagesFilesFromFolder(pathToFolder))
-            .then(({compressionCount, imagesCount}) => {
+            .then(({ compressionCount, imagesCount }) => {
                 console.log(chalk.yellow(`You optimized ${chalk.red(compressionCount)} images on this month, max number of free images is ${chalk.red(MAX_COUNT_OPTIMIZE_IMAGES)}`));
                 resolve(imagesCount);
             });
@@ -16,18 +16,27 @@ export function compressImages(pathToFolder) {
 }
 
 function compressed(images) {
-    const imagesCount = images.length;
     return new Promise((resolve) => {
         tinify.validate((err) => {
             if (err) {
                 console.error(chalk.red("The error message is: " + err.message));
             } else {
-                images.forEach(img => {
-                    tinify.fromFile(img).toFile(img);
+                const promiseArrayImages = images.map((img) => {
+                    return compressImg(img);
                 });
-                const compressionCount = tinify.compressionCount;
-                resolve({compressionCount, imagesCount});
+                Promise.all(promiseArrayImages, _ => {
+                }).then(_ => {
+                    resolve({ compressionCount: tinify.compressionCount, imagesCount: images.length });
+                })
             }
+        });
+    })
+}
+
+function compressImg(pathToImage) {
+    return new Promise((resolve) => {
+        tinify.fromFile(pathToImage).toFile(pathToImage, () => {
+            resolve();
         });
     })
 }
