@@ -1,6 +1,5 @@
-const Config = require('../modules/config').Config;
+import config from '../modules/config';
 
 export function setApiKey(key) {
-    const conf = new Config();
-    conf.setApiKey(key);
+    config.setConfig({ "apiKey": key });
 }

@@ -1,24 +1,14 @@
-import fs from 'fs-extra';
-import path from 'path';
-const DEFAULT_CONFIG_PATH = path.resolve(__dirname, '../../config.json')
-export class Config {
-    constructor() {
+import { readJSONSync, writeJSONSync } from 'fs-extra';
+import { resolve } from 'path';
 
-    }
+const DEFAULT_CONFIG_PATH = resolve(__dirname, '../../config.json');
 
-    getConfigFile() {
-        return JSON.parse(fs.readFileSync(DEFAULT_CONFIG_PATH, 'utf8'));
+export default {
+    getConfig() {
+        return readJSONSync(DEFAULT_CONFIG_PATH, 'utf8');
+    },
+    setConfig(config) {
+        const currentConfig = this.getConfig();
+        writeJSONSync(DEFAULT_CONFIG_PATH, {...currentConfig, ...config});
     }
-
-    getConfigObj(key) {
-        return {
-            "apiKey": key
-        }
-    }
-
-    setApiKey(key) {
-        const config = this.getConfigFile();
-        const apiObj = this.getConfigObj(key);
-        fs.writeFileSync(DEFAULT_CONFIG_PATH, JSON.stringify({ ...config, ...apiObj }));
-    }
-}
+};

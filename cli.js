@@ -37,11 +37,7 @@ commander
 	.action(() => {
 		const pathToImage = process.cwd();
 		console.log(chalk.yellow("Compress in progress!"));
-		compressImages(pathToImage)
-			.then((optimizedImagesCount) => {
-				console.log(chalk.green(`Done! Optimized ${optimizedImagesCount} images`));
-			}
-		);
+		compressImages(pathToImage);
 	});
 
 commander
