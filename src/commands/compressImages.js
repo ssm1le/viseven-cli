@@ -1,13 +1,14 @@
 import tinify from 'tinify';
 import chalk from 'chalk';
 import { getImagesFilesFromFolder } from '../modules/utils';
-import  config  from '../modules/config';
+import config from '../modules/config';
 
 const MAX_COUNT_OPTIMIZE_IMAGES = 500;
 
 export function compressImages(pathToFolder) {
-    return new Promise((resolve) => {
+    return new Promise(() => {
         tinify.key = config.getConfig().apiKey;
+        console.log(chalk.yellow("Compress in progress!"));
 
         compressed(getImagesFilesFromFolder(pathToFolder))
             .then(({ compressionCount, imagesCount }) => {
@@ -15,7 +16,7 @@ export function compressImages(pathToFolder) {
                 console.log(chalk.green(`Done! Optimized ${imagesCount} images`));
             })
             .catch((err) => {
-                console.error(chalk.red(`The error message is: ${err}`));
+                console.error(chalk.red(err));
             });
     })
 }
@@ -24,7 +25,7 @@ function compressed(images) {
     return new Promise((resolve, reject) => {
         tinify.validate((err) => {
             if (err) {
-                reject(err.message);
+                reject();
             }
 
             const promiseArrayImages = images.map((img) => {

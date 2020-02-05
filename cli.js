@@ -36,7 +36,6 @@ commander
 	.description('Compress images')
 	.action(() => {
 		const pathToImage = process.cwd();
-		console.log(chalk.yellow("Compress in progress!"));
 		compressImages(pathToImage);
 	});
 
@@ -45,7 +44,6 @@ commander
 	.description('Set tinyfy api key')
 	.action((key) => {
 		setApiKey(key);
-		console.log(chalk.green("Done"));
 	});
 
 commander
