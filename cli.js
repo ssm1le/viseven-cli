@@ -2,7 +2,6 @@
 import commander from 'commander';
 import chalk from 'chalk';
 
-import { getValidPath } from './src/modules/utils';
 import { extractFiles } from './src/commands/getFilesFromAemFolders';
 import { compressImages } from './src/commands/compressImages';
 import { setApiKey } from './src/commands/setConfig';
@@ -15,32 +14,34 @@ commander
 commander
 	.command('file [pathTo]')
 	.description('Get files from AEM folder')
-	.action((pathTo) => {
-		try {
-			const pathFrom = process.cwd();
-			pathTo = pathTo && getValidPath(pathTo) || pathFrom;
-
-			console.log(chalk.yellow("Start moving files"));
-			extractFiles(pathFrom, pathTo)
-				.then(() => {
-					console.log(chalk.green("Files moved!"))
-				});
-		}
-		catch (err) {
-			console.log(chalk.red(err));
-		}
+	.action((pathTo = process.cwd()) => {
+		console.log(chalk.yellow("Start moving files"));
+		extractFiles(process.cwd(), pathTo)
+			.then(() => {
+				console.log(chalk.green("Files moved!"))
+			})
+			.catch((err) => {
+				console.error(chalk.red(err));
+			});
 	});
 
 commander
-	.command('compress')
+	.command('press')
 	.description('Compress images')
 	.action(() => {
-		const pathToImage = process.cwd();
-		compressImages(pathToImage);
+		console.log(chalk.yellow("Compress in progress!"));
+		compressImages(process.cwd())
+			.then(({ compressionCount, imagesCount, MAX_COUNT_OPTIMIZE_IMAGES }) => {
+				console.log(chalk.yellow(`You optimized ${chalk.red(compressionCount)} images on this month, max number of free images is ${chalk.red(MAX_COUNT_OPTIMIZE_IMAGES)}`));
+				console.log(chalk.green(`Done! Optimized ${imagesCount} images`));
+			})
+			.catch((err) => {
+				console.error(chalk.red(err));
+			});
 	});
 
 commander
-	.command('setApiKey <key>')
+	.command('key <key>')
 	.description('Set tinyfy api key')
 	.action((key) => {
 		setApiKey(key);

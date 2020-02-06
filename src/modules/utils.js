@@ -16,10 +16,3 @@ export function moveFileToDirectory(file, pathToDirectory) {
 export function getConfigFile() {
   return JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), 'utf8'));
 }
-
-export function getValidPath(path) {
-  if (fs.existsSync(path)) {
-    return path;
-  }
-  throw `Err! Invalid path: ${path}`;
-}
