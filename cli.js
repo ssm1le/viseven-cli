@@ -31,8 +31,8 @@ commander
 	.action(() => {
 		console.log(chalk.yellow("Compress in progress!"));
 		compressImages(process.cwd())
-			.then(({ compressionCount, imagesCount, MAX_COUNT_OPTIMIZE_IMAGES }) => {
-				console.log(chalk.yellow(`You optimized ${chalk.red(compressionCount)} images on this month, max number of free images is ${chalk.red(MAX_COUNT_OPTIMIZE_IMAGES)}`));
+			.then(({ compressionCount, imagesCount, maxCount }) => {
+				console.log(chalk.yellow(`You optimized ${chalk.red(compressionCount)} images on this month, max number of free images is ${chalk.red(maxCount)}`));
 				console.log(chalk.green(`Done! Optimized ${imagesCount} images`));
 			})
 			.catch((err) => {
