@@ -7,3 +7,9 @@ export function setApiKey(key) {
         return config.setConfig(tinify.getKeyConfigObj(key));
     })
 }
+
+export function getApiKey() {
+    return new Promise((resolve) => {
+        resolve(tinify.getKey())
+    });
+}

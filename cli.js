@@ -4,7 +4,7 @@ import chalk from 'chalk';
 
 import { extractFiles } from './src/commands/getFilesFromAemFolders';
 import { compressImages } from './src/commands/compressImages';
-import { setApiKey } from './src/commands/setConfig';
+import { setApiKey, getApiKey } from './src/commands/apiKeyConfig';
 
 const { version } = require('./package.json');
 
@@ -41,16 +41,22 @@ commander
 	});
 
 commander
-	.command('key <key>')
+	.command('key [key]')
 	.description('Set tinyfy api key')
 	.action((key) => {
-		setApiKey(key)
-			.then(() => {
-				console.log(chalk.green("API key is added!"));
+		if (key) {
+			setApiKey(key)
+				.then(() => {
+					console.log(chalk.green("API key is added!"));
+				})
+				.catch((err) => {
+					console.error(chalk.red(err));
+				});
+		} else {
+			getApiKey().then(key => {
+				console.log(chalk.green(key));
 			})
-			.catch((err) => {
-				console.error(chalk.red(err));
-			});
+		}
 	});
 
 commander

@@ -9,7 +9,7 @@
     "link": "npm i && npm link"
   },
   "keywords": [],
-  "author": "a.hrodetskiy@viseven.com",
+  "author": "a.hrodetskiy@viseven.com, m.molodetskiy@viseven.com",
   "license": "ISC",
   "dependencies": {
     "chalk": "^3.0.0",
