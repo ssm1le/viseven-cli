@@ -2,19 +2,20 @@ import tinify from 'tinify';
 import config from '../../modules/config';
 
 const MAX_COUNT_OPTIMIZE_IMAGES = 500;
+const CONFIG_KEY = "apiKey";
 
 export default {
     getMaxCount() {
         return MAX_COUNT_OPTIMIZE_IMAGES;
     },
     getKey() {
-        return config.getConfig().apiKey;
+        return config.getConfig()[CONFIG_KEY];
     },
     setKey(key = this.getKey()) {
         tinify.key = key;
     },
     getKeyConfigObj(key) {
-        return { "apiKey": key }
+        return { [CONFIG_KEY]: key }
     },
     getCompressionCount() {
         return tinify.compressionCount;

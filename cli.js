@@ -44,7 +44,13 @@ commander
 	.command('key <key>')
 	.description('Set tinyfy api key')
 	.action((key) => {
-		setApiKey(key);
+		setApiKey(key)
+			.then(() => {
+				console.log(chalk.green("API key is added!"));
+			})
+			.catch((err) => {
+				console.error(chalk.red(err));
+			});
 	});
 
 commander

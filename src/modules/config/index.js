@@ -9,6 +9,9 @@ export default {
     },
     setConfig(config) {
         const currentConfig = this.getConfig();
-        writeJSONSync(DEFAULT_CONFIG_PATH, {...currentConfig, ...config});
+        return new Promise((resolve) => {
+            writeJSONSync(DEFAULT_CONFIG_PATH, { ...currentConfig, ...config });
+            resolve();
+        })
     }
 };
