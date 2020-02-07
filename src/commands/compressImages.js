@@ -1,11 +1,11 @@
-import tinify from 'tinify';
+import tinify from '../modules/tinify';
 import { getImagesFilesFromFolder } from '../modules/utils';
 import config from '../modules/config';
 
 const MAX_COUNT_OPTIMIZE_IMAGES = 500;
 
 export function compressImages(pathToFolder) {
-    tinify.key = config.getConfig().apiKey;
+    tinify.setKey();
     return new Promise((resolve, reject) => {
         compressed(getImagesFilesFromFolder(pathToFolder))
             .then(({ compressionCount, imagesCount }) => {
@@ -24,13 +24,7 @@ function compressed(images) {
                 reject(err.message);
             }
 
-            const promiseArrayImages = images.map((img) => {
-                return compressImg(img);
-            });
 
-            Promise.all(promiseArrayImages).then(() => {
-                resolve({ compressionCount: tinify.compressionCount, imagesCount: images.length });
-            })
         });
     })
 }
@@ -40,5 +34,15 @@ function compressImg(pathToImage) {
         tinify.fromFile(pathToImage).toFile(pathToImage, () => {
             resolve();
         });
+    })
+}
+
+function wait(params) {
+    const promiseArrayImages = images.map((img) => {
+        return tinify.compress(img);
+    });
+
+    Promise.all(promiseArrayImages).then(() => {
+        resolve({ compressionCount: tinify.compressionCount, imagesCount: images.length });
     })
 }
