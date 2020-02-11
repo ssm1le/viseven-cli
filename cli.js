@@ -13,6 +13,7 @@ commander
 
 commander
 	.command('file [pathTo]')
+	.alias('f')
 	.description('Get files from AEM folder')
 	.action((pathTo = process.cwd()) => {
 		console.log(chalk.yellow("Start moving files"));
@@ -27,8 +28,11 @@ commander
 
 commander
 	.command('press')
+	.alias('p')
+	.option('-a, --all', "Compress pictures in all child folders")
 	.description('Compress images')
-	.action(() => {
+	.action((args) => {
+		args.all ? console.log(args.all) : "";
 		console.log(chalk.yellow("Compress in progress!"));
 		compressImages(process.cwd())
 			.then(({ compressionCount, imagesCount, maxCount }) => {
@@ -42,6 +46,7 @@ commander
 
 commander
 	.command('key [key]')
+	.alias('k')
 	.description('Set tinyfy api key')
 	.action((key) => {
 		if (key) {
@@ -60,10 +65,20 @@ commander
 	});
 
 commander
-	.command('test')
-	.description('test')
+	.command('project')
+	.alias('i')
+	.description('Init project')
 	.action(() => {
 		console.log(chalk.white.bgGreen.bold("test"));
+	});
+
+commander
+	.command('test')
+	.alias('t')
+	.option('-d, --dec', "test option")
+	.description('test')
+	.action((args) => {
+		console.log(args.dec);
 	});
 
 commander
