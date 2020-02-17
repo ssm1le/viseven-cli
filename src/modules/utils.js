@@ -2,13 +2,14 @@ import fs from 'fs-extra';
 import path from 'path';
 import glob from 'glob';
 
+const isDirectory = source => fs.lstatSync(source).isDirectory();
+
 export function getAllFoldersFromPath(mainPath) {
-  return fs.readdirSync(mainPath).filter(f => fs.statSync(path.join(mainPath, f)).isDirectory());
+  return fs.readdirSync(mainPath).filter(f => isDirectory(path.resolve(mainPath, f)));
 }
 
 export function getImagesFilesFromFolder(pathToFolder) {
-  const isDirectory = source => fs.lstatSync(source).isDirectory();
-  return glob.sync(`${pathToFolder}${path.sep}**${path.sep}*.{png,jpg}`).filter(itemPath => !isDirectory(itemPath));
+  return glob.sync(`${pathToFolder}${path.sep}**${path.sep}*.{png,jpg}`).filter(file => !isDirectory(file));
 }
 
 export function moveFileToDirectory(file, pathToDirectory) {
@@ -16,5 +17,5 @@ export function moveFileToDirectory(file, pathToDirectory) {
 }
 
 export function getConfigFile() {
-  return JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config.json"), 'utf8'));
+  return JSON.parse(fs.readFileSync(path.resolve(__dirname, "../config.json"), 'utf8'));
 }
