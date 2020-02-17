@@ -27,7 +27,8 @@ export default {
             });
         })
     },
-    validate() {
+    validate(key) {
+        this.setKey(key);
         return new Promise((resolve, reject) => {
             tinify.validate((err) => {
                 if (err) {

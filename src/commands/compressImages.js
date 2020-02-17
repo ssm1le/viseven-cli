@@ -4,13 +4,18 @@ import { getImagesFilesFromFolder } from '../modules/utils';
 export function compressImages(pathToFolder) {
     return new Promise((resolve, reject) => {
         const images = getImagesFilesFromFolder(pathToFolder);
-        tinify.setKey();
         tinify.validate()
             .then(() => {
                 return compress(images);
             })
             .then(() => {
-                resolve({ compressionCount: tinify.getCompressionCount(), imagesCount: images.length, maxCount: tinify.getMaxCount() });
+                const compressionCount = tinify.getCompressionCount();
+                const imagesCount = images.length;
+                const maxCount = tinify.getMaxCount();
+                if (compressionCount >= maxCount) {
+                    reject('Maximum limit for this key reached!');
+                }
+                resolve({ compressionCount, imagesCount, maxCount });
             })
             .catch((err) => {
                 reject(err);

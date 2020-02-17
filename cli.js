@@ -4,7 +4,7 @@ import chalk from 'chalk';
 
 import { extractFiles } from './src/commands/getFilesFromAemFolders';
 import { compressImages } from './src/commands/compressImages';
-import { setApiKey, getApiKey } from './src/commands/apiKeyConfig';
+import { setApiKey, getApiKey, getApiKeyCount } from './src/commands/apiKeyConfig';
 
 const { version } = require('./package.json');
 
@@ -47,7 +47,7 @@ commander
 commander
 	.command('key [key]')
 	.alias('k')
-	.description('Set tinyfy api key')
+	.description('Set/Get tinyfy api key')
 	.action((key) => {
 		if (key) {
 			setApiKey(key)
@@ -58,9 +58,14 @@ commander
 					console.error(chalk.red(err));
 				});
 		} else {
-			getApiKey().then(key => {
-				console.log(chalk.green(key));
-			})
+			getApiKey()
+				.then(key => {
+					console.log(chalk.green(key));
+					return getApiKeyCount(key);
+				})
+				.then(key => {
+					console.log(`Compression count: ${chalk.red(key)}`);
+				});
 		}
 	});
 
