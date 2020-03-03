@@ -4,4 +4,4 @@ node_modules
 package-lock.json
 test.js
 *.zip
-./src/config.json
+src/config.json
