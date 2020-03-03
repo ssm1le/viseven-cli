@@ -2,6 +2,7 @@
 import commander from 'commander';
 import chalk from 'chalk';
 
+import { convert } from './src/commands/pdfToImage';
 import { extractFiles } from './src/commands/getFilesFromAemFolders';
 import { compressImages } from './src/commands/compressImages';
 import { setApiKey, getApiKey, getApiKeyCount } from './src/commands/apiKeyConfig';
@@ -78,12 +79,11 @@ commander
 	});
 
 commander
-	.command('test')
+	.command('test <path>')
 	.alias('t')
-	.option('-d, --dec', "test option")
 	.description('test')
-	.action((args) => {
-		console.log(args.dec);
+	.action((path) => {
+		convert(path);
 	});
 
 commander
