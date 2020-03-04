@@ -13,6 +13,9 @@ export default {
     getKey() {
         return config.getConfig()[CONFIG_KEY];
     },
+    setKey(key = this.getKey()) {
+        return convertapiPackage(key);
+    },
     getKeyConfigObj(key) {
         return { [CONFIG_KEY]: key }
     },
@@ -26,17 +29,18 @@ export default {
                 JpgQuality: '100',
                 FileName: 'slide'
             }
+            const convertapi = this.setKey();
 
             convertapi.convert('png', conf, 'pdf')
                 .then(result => {
-                    return result.saveFiles(join(__dirname, 'images'));
+                    return result.saveFiles(join(process.cwd(), 'images'));
                 })
                 .then(filesPath => {
                     resolve(filesPath);
                 })
                 .catch(e => {
                     console.error(e.toString());
-                    reject()
+                    reject(e.toString());
                 });
         })
     }
