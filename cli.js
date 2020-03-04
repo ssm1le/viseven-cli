@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { convertPdf } from './src/commands/pdfToImage';
 import { extractFiles } from './src/commands/getFilesFromAemFolders';
 import { compressImages } from './src/commands/compressImages';
-import { setApiKey, getApiKey, getApiKeyCount } from './src/commands/apiKeyConfig';
+import { init, setApiKey, getApiKey, getApiKeyCount } from './src/commands/apiKeyConfig';
 
 const { version } = require('./package.json');
 
@@ -84,6 +84,16 @@ commander
 	.description('test')
 	.action((path) => {
 		convertPdf(path);
+	});
+
+commander
+	.command('config')
+	.alias('c')
+	.description('Config init')
+	.option('-p, --pdf <key>', "Set pdf api key")
+	.option('-t, --tiny <key>', "Set tiny api key")
+	.action((args) => {
+		init();
 	});
 
 commander

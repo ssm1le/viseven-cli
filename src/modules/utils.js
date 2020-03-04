@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import glob from 'glob';
 
+
 const isDirectory = source => fs.lstatSync(source).isDirectory();
 
 export function getAllFoldersFromPath(mainPath) {
@@ -18,6 +19,10 @@ export function moveFileToDirectory(file, pathToDirectory) {
 
 export function getFile(pathToFile) {
   return fs.readFileSync(pathToFile);
+}
+
+export function writeJSON(pathToJSON, obj) {
+  fs.writeJSONSync(pathToJSON, obj);
 }
 
 export function getConfigFile() {
