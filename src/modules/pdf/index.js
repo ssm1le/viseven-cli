@@ -1,7 +1,7 @@
 import config from '../../modules/config';
-import { join } from 'path';
 import convertapiPackage from 'convertapi';
-const convertapi = convertapiPackage('jmZJT3WkdWUjV1oc');
+import { PDFDocument } from 'pdf-lib'
+import { join } from 'path';
 
 const MAX_TIME_CONVERTING_PDF = 1500;
 const CONFIG_KEY = "pdfApiKey";
@@ -20,13 +20,19 @@ export default {
         return { [CONFIG_KEY]: key }
     },
     getCountConvertTime() {
-        return "";
+        return new Promise((resolve, reject) => {
+            const convertapi = this.setKey();
+            convertapi.getUser()
+                .then(info => {
+                    resolve("Seconds left: " + info.SecondsLeft)
+                });
+        })
     },
     convert(pathToPdf) {
         return new Promise((resolve, reject) => {
             let conf = {
                 File: pathToPdf,
-                JpgQuality: '100',
+                PngQuality: '100',
                 FileName: 'slide'
             }
             const convertapi = this.setKey();
@@ -43,5 +49,13 @@ export default {
                     reject(e.toString());
                 });
         })
+    },
+    async getPdfSize(dataBuffer) {
+        const pdfDoc = await PDFDocument.load(dataBuffer);
+        const pages = pdfDoc.getPages();
+        const firstPage = pages[0];
+        const { width, height } = firstPage.getSize();
+
+        return { width, height };
     }
 }

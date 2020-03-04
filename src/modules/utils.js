@@ -16,6 +16,10 @@ export function moveFileToDirectory(file, pathToDirectory) {
   fs.renameSync(file, path.resolve(pathToDirectory, path.basename(file)));
 }
 
+export function getFile(pathToFile) {
+  return fs.readFileSync(pathToFile);
+}
+
 export function getConfigFile() {
   return JSON.parse(fs.readFileSync(path.resolve(__dirname, "../config.json"), 'utf8'));
 }

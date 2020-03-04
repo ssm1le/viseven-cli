@@ -1,26 +1,27 @@
-import fs from 'fs-extra';
-import { PDFDocument } from 'pdf-lib'
-import convertapi from '../modules/convertapi'
+import { getFile } from '../modules/utils';
+import pdf from '../modules/pdf'
 
 export async function convertPdf(pathToPdf) {
     const pdfSize = await getPdfSize(pathToPdf);
     console.log(`Width: ${pdfSize.width}px | Height: ${pdfSize.height}px`);
 
-    convertapi.convert(pathToPdf)
-        .then(() => {
+    pdf.convert(pathToPdf)
+        .then((images) => {
             console.log(images);
         })
         .catch(e => {
             console.log(e.toString());
         })
+        .then(() => {
+            pdf.getCountConvertTime().then(count => {
+                console.log(count);
+                return count;
+            })
+
+        })
+
 }
-
 async function getPdfSize(pathToPdf) {
-    const dataBuffer = await fs.readFile(pathToPdf);
-    const pdfDoc = await PDFDocument.load(dataBuffer);
-    const pages = pdfDoc.getPages();
-    const firstPage = pages[0];
-    const { width, height } = firstPage.getSize();
-
-    return { width, height };
+    const dataBuffer = getFile(pathToPdf);
+    return await pdf.getPdfSize(dataBuffer);
 }
