@@ -25,19 +25,23 @@ export default {
             convertapi.getUser()
                 .then(info => {
                     resolve("Seconds left: " + info.SecondsLeft)
+                })
+                .catch(e => {
+                    console.error(e.toString());
+                    reject(e.toString());
                 });
         })
     },
     convert(pathToPdf) {
         return new Promise((resolve, reject) => {
-            let conf = {
+            const configure = {
                 File: pathToPdf,
                 PngQuality: '100',
                 FileName: 'slide'
             }
             const convertapi = this.setKey();
 
-            convertapi.convert('png', conf, 'pdf')
+            convertapi.convert('png', configure, 'pdf')
                 .then(result => {
                     return result.saveFiles(join(process.cwd(), 'images'));
                 })
