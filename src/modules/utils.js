@@ -21,10 +21,6 @@ export function getFile(pathToFile) {
   return fs.readFileSync(pathToFile);
 }
 
-export function writeJSON(pathToJSON, obj) {
-  fs.writeJSONSync(pathToJSON, obj);
-}
-
 export function getConfigFile() {
   return JSON.parse(fs.readFileSync(path.resolve(__dirname, "../config.json"), 'utf8'));
 }

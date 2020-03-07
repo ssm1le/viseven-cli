@@ -93,7 +93,10 @@ commander
 	.option('-p, --pdf <key>', "Set pdf api key")
 	.option('-t, --tiny <key>', "Set tiny api key")
 	.action((args) => {
-		init();
+		init(args)
+			.then(() => {
+				console.log(chalk.green("Inited!"));
+			})
 	});
 
 commander
