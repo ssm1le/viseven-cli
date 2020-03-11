@@ -2,6 +2,7 @@
 import commander from 'commander';
 import chalk from 'chalk';
 
+import { init as test } from './src/commands/regPdfApikey';
 import { convertPdf } from './src/commands/pdfToImage';
 import { extractFiles } from './src/commands/getFilesFromAemFolders';
 import { compressImages } from './src/commands/compressImages';
@@ -79,11 +80,11 @@ commander
 	});
 
 commander
-	.command('test <path>')
+	.command('test')
 	.alias('t')
 	.description('test')
-	.action((path) => {
-		convertPdf(path);
+	.action(() => {
+		test();
 	});
 
 commander

@@ -1,31 +1,16 @@
 
 const puppeteer = require('puppeteer');
-const uniqueNamesGenerator = require("unique-names-generator").uniqueNamesGenerator;
-const names = require("unique-names-generator").names;
-const colors = require("unique-names-generator").colors;
+import UserCredentials from '../modules/userCredentials/index.js';
 
-const getRandomFirstName = uniqueNamesGenerator({
-    dictionaries: [names],
-    length: 1,
-});
-const getRandomLastName = uniqueNamesGenerator({
-    dictionaries: [colors],
-    style: 'capital',
-    length: 1,
-});
-const email = `${getRandomFirstName}-${getRandomFirstName}@gmail.com`.toLowerCase();
-const password = getRandomFirstName + Date.now();
-
-init();
-
-async function init() {
-    const key = await getPdfApiKey();
+export async function init() {
+    const user = new UserCredentials();
+    const key = await getPdfApiKey(user);
     console.log('Finish! Key: ', key);
     return key;
 }
 
-async function getPdfApiKey() {
-    const browser = await puppeteer.launch({ headless: true });
+async function getPdfApiKey(user) {
+    const browser = await puppeteer.launch({ headless: false });
     const context = await browser.createIncognitoBrowserContext();
 
     const page = await context.newPage();
@@ -39,17 +24,18 @@ async function getPdfApiKey() {
     await page.click('nav .open-sign-up');
     await page.waitFor(2000);
     await page.focus("form[action=\"/a/register\"] input#FirstName");
-    await page.keyboard.type(getRandomFirstName);
+    await page.keyboard.type(user.firstName);
     await page.focus("form[action=\"/a/register\"] input#LastName");
-    await page.keyboard.type(getRandomLastName);
+    await page.keyboard.type(user.lastName);
     await page.focus("form[action=\"/a/register\"] input[name='Email']");
-    await page.keyboard.type(email);
+    await page.keyboard.type(user.getEmail());
     await page.focus("form[action=\"/a/register\"] input[name='Password']");
-    await page.keyboard.type(password);
+    await page.keyboard.type(user.getPassword());
     await page.click("form[action=\"/a/register\"] input[type='submit']");
     await page.waitFor(2000);
     await page.waitForSelector('#user-secret');
     const KEY = await page.evaluate(() => document.querySelector("#user-secret").value);
     await browser.close();
+    
     return KEY;
 }
