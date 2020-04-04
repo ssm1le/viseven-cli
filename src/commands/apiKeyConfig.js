@@ -1,12 +1,6 @@
 import config from '../modules/config';
 import tinify from '../modules/tinify';
 
-export function init(args) {
-    return new Promise((resolve) => {
-        resolve(config.init(args))
-    });
-
-}
 export function setApiKey(key) {
     return tinify.validate(key).then(() => {
         return config.setConfig(tinify.getKeyConfigObj(key));

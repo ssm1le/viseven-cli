@@ -2,11 +2,13 @@
 import commander from 'commander';
 import chalk from 'chalk';
 
-import { init as test } from './src/commands/regPdfApikey';
-import { convertPdf } from './src/commands/pdfToImage';
+// import { init as test } from './src/commands/regPdfApikey';
+// import { convertPdf } from './src/commands/pdfToImage';
 import { extractFiles } from './src/commands/getFilesFromAemFolders';
 import { compressImages } from './src/commands/compressImages';
-import { init, setApiKey, getApiKey, getApiKeyCount } from './src/commands/apiKeyConfig';
+import { setApiKey, getApiKey, getApiKeyCount } from './src/commands/apiKeyConfig';
+// import { rejects } from 'assert';
+
 
 const { version } = require('./package.json');
 
@@ -21,7 +23,7 @@ commander
 		console.log(chalk.yellow("Start moving files"));
 		extractFiles(process.cwd(), pathTo)
 			.then(() => {
-				console.log(chalk.green("Files moved!"))
+				console.log(chalk.green("Files moved!"));
 			})
 			.catch((err) => {
 				console.error(chalk.red(err));
@@ -62,11 +64,15 @@ commander
 		} else {
 			getApiKey()
 				.then(key => {
+					if(!key) throw("Key is not found");
 					console.log(chalk.green(key));
 					return getApiKeyCount(key);
 				})
 				.then(key => {
 					console.log(`Compression count: ${chalk.red(key)}`);
+				})
+				.catch((err) => {
+					console.error(chalk.red(err));
 				});
 		}
 	});
@@ -87,18 +93,18 @@ commander
 		test();
 	});
 
-commander
-	.command('config')
-	.alias('c')
-	.description('Config init')
-	.option('-p, --pdf <key>', "Set pdf api key")
-	.option('-t, --tiny <key>', "Set tiny api key")
-	.action((args) => {
-		init(args)
-			.then(() => {
-				console.log(chalk.green("Inited!"));
-			})
-	});
+// commander
+// 	.command('config')
+// 	.alias('c')
+// 	.description('Config init')
+// 	.option('-p, --pdf <key>', "Set pdf api key")
+// 	.option('-t, --tiny <key>', "Set tiny api key")
+// 	.action((args) => {
+// 		init(args)
+// 			.then(() => {
+// 				console.log(chalk.green("Inited!"));
+// 			})
+// 	});
 
 commander
 	.parse(process.argv);

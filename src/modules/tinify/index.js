@@ -2,9 +2,9 @@ import tinify from 'tinify';
 import config from '../../modules/config';
 
 const MAX_COUNT_OPTIMIZE_IMAGES = 500;
-const CONFIG_KEY = "apiKey";
+const CONFIG_KEY = "tinifyApiKey";
 
-export default {
+const Tinify = {
     getMaxCount() {
         return MAX_COUNT_OPTIMIZE_IMAGES;
     },
@@ -39,3 +39,6 @@ export default {
         })
     }
 }
+
+Object.freeze(Tinify);
+export default Tinify;

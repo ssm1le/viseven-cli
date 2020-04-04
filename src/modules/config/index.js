@@ -1,31 +1,27 @@
-import { readJSONSync, writeJSONSync } from 'fs-extra';
+import { readJSONSync, writeJSONSync, existsSync } from 'fs-extra';
 import { resolve } from 'path';
 
 const DEFAULT_CONFIG_PATH = resolve(__dirname, '../../config.json');
+const DEFAULT_CONFIG = {
+    pdfApiKey: "",
+    tinifyApiKey: "",
+    secretApiKey: ""
+};
 
-export default {
-    init(args) {
-        let configObj = {};
-
-        if (args.pdf) configObj.pdfApiKey = args.pdf;
-        else if (args.tiny) configObj.apiKey = args.tiny;
-        else {
-            configObj.pdfApiKey = "";
-            configObj.apiKey = "";
-        }
-
-        return new Promise((resolve) => {
-            resolve(this.setConfig(configObj));
-        });
-    },
+const Config = {
     getConfig() {
+        if (!existsSync(DEFAULT_CONFIG_PATH)) return DEFAULT_CONFIG;
         return readJSONSync(DEFAULT_CONFIG_PATH, 'utf8');
     },
     setConfig(config) {
         const currentConfig = this.getConfig();
+
         return new Promise((resolve) => {
-            writeJSONSync(DEFAULT_CONFIG_PATH, { ...currentConfig, ...config });
+            writeJSONSync(DEFAULT_CONFIG_PATH, {...DEFAULT_CONFIG, ...currentConfig, ...config});
             resolve();
         })
     }
 };
+
+Object.freeze(Config);
+export default Config;

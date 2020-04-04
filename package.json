@@ -17,6 +17,7 @@
     "commander": "^4.0.1",
     "convertapi": "^1.4.0",
     "esm": "^3.2.25",
+    "fs": "0.0.1-security",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.6",
     "pdf-lib": "^1.4.0",
